@@ -1,3 +1,5 @@
+const Account = require("../models/account");
+const jwt = require("jsonwebtoken");
 module.exports = function (con) {
   this.createOrUpdateAccount = function (req, res) {
     var accountMail = req.body.accountMail;
@@ -16,7 +18,21 @@ module.exports = function (con) {
       ],
       function (err, result) {
         if (err) throw err;
-        res.send(result);
+        jwt.sign(
+          { user: result },
+          "secretkey",
+          { expiresIn: "100 days" },
+          (err, token) => {
+            if (err) throw err;
+            let myAccount = new Account(
+              accountMail,
+              accountDisplayName,
+              accountUrlPhoto,
+              token
+            );
+            res.send(myAccount);
+          }
+        );
       }
     );
   };
