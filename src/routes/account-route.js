@@ -1,18 +1,12 @@
 const jwt = require("jsonwebtoken");
 
 accountRoutes = function (app, con) {
-  //
-  // DECLARE ACCOUNT CONTROLLER
-  //
+  //TODO: DECLARE ACCOUNT CONTROLLER
   var _ac = require("../controllers/account-controller");
   var accountController = new _ac(con);
   var _verifyToken = require("../helpers/helpers");
-  //
-  // end declare account controller
 
-  //
-  //---     ROUTES      ---
-  //
+  //TODO: ---     ROUTES      ---
   app.post("/account", function (req, res) {
     console.log("\x1b[36m", "POST:/account", "\x1b[0m");
     accountController.createOrUpdateAccount(req, res);

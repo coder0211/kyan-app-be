@@ -20,13 +20,12 @@ con.connect(function (err) {
   console.log("Connected!");
 });
 
-///Routes --- Declare ---
+//TODO: Routes --- Declare ---
 
-//
 var accountRoute = require("../src/routes/account-route");
 new accountRoute(app, con);
 
-/// ------
+//? ------
 
 app.enable("trust proxy");
 server.listen(port, () => {
