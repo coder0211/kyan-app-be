@@ -5,14 +5,18 @@ module.exports = function (con) {
     var accountMail = req.body.accountMail;
     var accountDisplayName = req.body.accountDisplayName;
     var accountUrlPhoto = req.body.accountUrlPhoto;
+    var accountToken = req.body.accountToken;
+    var accountId = req.body.accountId;
     var sql =
-      "INSERT INTO Account (accountMail, accountDisplayName, accountUrlPhoto) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE accountDisplayName = ?, accountUrlPhoto = ?";
+      "INSERT INTO Account (accountId, accountMail, accountDisplayName, accountUrlPhoto, accountToken) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE accountDisplayName = ?, accountUrlPhoto = ?";
     con.query(
       sql,
       [
+        accountId,
         accountMail,
         accountDisplayName,
         accountUrlPhoto,
+        accountToken,
         accountDisplayName,
         accountUrlPhoto,
       ],
@@ -25,9 +29,11 @@ module.exports = function (con) {
           (err, token) => {
             if (err) throw err;
             let myAccount = new Account(
+              accountId,
               accountMail,
               accountDisplayName,
               accountUrlPhoto,
+              accountToken,
               token
             );
             res.send(myAccount);
