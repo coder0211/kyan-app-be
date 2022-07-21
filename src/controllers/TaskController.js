@@ -15,7 +15,7 @@ class TaskController {
             taskAssignTo,
         } = req.body;
 
-        if (id) {
+        if (taskId) {
             //update
             var sql_update = `UPDATE Task SET taskCreateBy = ?, taskSummary = ?, taskDescription = ?
                             , taskDueTimeLTE = ?, taskDueTimeGTE = ?, taskIsDone = ?,taskCreateAt = ?
@@ -60,8 +60,12 @@ class TaskController {
                     taskAssignTo,
                 ],
                 (err, result) => {
-                    if (err) throw err;
-                    res.send(result);
+                    try {
+                        if (err) throw err;
+                        res.send(result);
+                    } catch (error) {
+                        res.json(error);
+                    }
                 },
             );
         }

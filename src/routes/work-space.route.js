@@ -5,7 +5,7 @@ const workSpaceController = require('../controllers/WorkSpaceController');
 
 router.post('/create-or-update', auth, workSpaceController.createOrUpdate);
 
-router.delete('/deletet', auth, workSpaceController.delete);
+router.delete('/delete', auth, workSpaceController.delete);
 
 router.get('/get-one', auth, workSpaceController.getOne);
 

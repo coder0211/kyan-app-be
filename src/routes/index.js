@@ -4,7 +4,7 @@ const accountRoute = require('./account.route');
 const taskRoute = require('./task.route');
 const workSpaceRoute = require('./work-space.route');
 
-router.get('/hello', (req, res) => {
+router.get('/', (req, res) => {
     res.send('Welcome to kyan app!');
 });
 router.use('/account', accountRoute);

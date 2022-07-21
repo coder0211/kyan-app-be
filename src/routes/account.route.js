@@ -4,12 +4,14 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const accountController = require('../controllers/AccountController');
 
-router.post('/', accountController.createOrUpdateAccount);
+router.get('/get-all', auth, accountController.getAll);
 
-router.get('/:accountMail', auth, accountController.getAccounts);
+router.get('/:accountMail', auth, accountController.getOne);
+
+router.post('/create-or-update', accountController.createOrUpdate);
 
 router.post('/login', accountController.login);
 
-router.put('/:accountMail', auth, accountController.getAccounts);
+router.delete('/delete', accountController.delete);
 
 module.exports = router;

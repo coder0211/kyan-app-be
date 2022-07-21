@@ -15,6 +15,7 @@
         "jsonwebtoken": "^8.5.1",
         "moment-timezone": "^0.5.34",
         "mysql": "^2.18.1",
+        "nanoid": "^3.1.20",
         "nodemon": "^2.0.19",
         "shortid": "^2.2.16",
         "socket.io": "^4.5.1"

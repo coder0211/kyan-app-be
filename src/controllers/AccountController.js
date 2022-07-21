@@ -1,16 +1,16 @@
 const db = require('../configs/config-mysql');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
+const Account = require('../models/account');
 class AccountController {
-    createOrUpdateAccount(req, res) {
+    createOrUpdate(req, res) {
+        console.log(req.body);
         var accountMail = req.body.accountMail;
         var accountDisplayName = req.body.accountDisplayName;
         var accountUrlPhoto = req.body.accountUrlPhoto;
         var accountToken = req.body.accountToken;
         var accountId = req.body.accountId;
-        var sql =
-            'INSERT INTO Account (accountId, accountMail, accountDisplayName, accountUrlPhoto, accountToken) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE accountDisplayName = ?, accountUrlPhoto = ?';
+        var sql = `INSERT INTO Account (accountId, accountMail, accountDisplayName, accountUrlPhoto, accountToken) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE accountDisplayName = ?, accountUrlPhoto = ?`;
         db.query(
             sql,
             [
@@ -24,18 +24,23 @@ class AccountController {
             ],
             function (err, result) {
                 if (err) throw err;
-                jwt.sign({ user: result }, 'secretkey', { expiresIn: '100 days' }, (err, token) => {
-                    if (err) throw err;
-                    let myAccount = new Account(
-                        accountId,
-                        accountMail,
-                        accountDisplayName,
-                        accountUrlPhoto,
-                        accountToken,
-                        token,
-                    );
-                    res.send(myAccount);
-                });
+                jwt.sign(
+                    { _id: accountId },
+                    'secretkey',
+                    { expiresIn: '100 days' },
+                    (err, token) => {
+                        if (err) throw err;
+                        let myAccount = new Account(
+                            accountId,
+                            accountMail,
+                            accountDisplayName,
+                            accountUrlPhoto,
+                            accountToken,
+                            token,
+                        );
+                        res.send(myAccount);
+                    },
+                );
             },
         );
     }
@@ -58,7 +63,7 @@ class AccountController {
         });
     }
 
-    getAccounts(req, res) {
+    getOne(req, res) {
         var accountMail = req.params.accountMail;
         if (accountMail != null) {
             var sql = 'SELECT * FROM Account WHERE accountMail = ?';
@@ -66,18 +71,20 @@ class AccountController {
                 if (err) throw err;
                 res.send(result[0]);
             });
-        } else {
-            db.query('SELECT * FROM Account', function (err, result) {
-                if (err) throw err;
-                res.send(result);
-            });
         }
     }
 
-    deleteAccount(req, res) {
+    getAll(req, res) {
+        db.query('SELECT * FROM Account', function (err, result) {
+            if (err) throw err;
+            res.send(result);
+        });
+    }
+
+    delete(req, res) {
         var accountMail = req.body.accountMail;
         if (accountMail != null) {
-            sql = 'DELETE FROM Account WHERE accountMail = ?';
+            const sql = 'DELETE FROM Account WHERE accountMail = ?';
             db.query(sql, [accountMail], function (err, result) {
                 if (err) throw err;
                 res.send(result);
