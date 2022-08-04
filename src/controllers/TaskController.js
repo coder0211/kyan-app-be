@@ -1,7 +1,7 @@
 const db = require('../configs/config-mysql');
-
+const asyncQuery = require('../helpers/async-mysql');
 class TaskController {
-    createOrUpdate(req, res) {
+    async createOrUpdate(req, res) {
         const {
             taskId,
             taskCreateBy,
@@ -15,15 +15,14 @@ class TaskController {
             taskAssignTo,
         } = req.body;
 
-        if (taskId) {
-            //update
-            var sql_update = `UPDATE Task SET taskCreateBy = ?, taskSummary = ?, taskDescription = ?
-                            , taskDueTimeLTE = ?, taskDueTimeGTE = ?, taskIsDone = ?,taskCreateAt = ?
-                            , taskWorkspaceId = ?, taskAssignTo = ? WHERE taskId = ?`;
+        try {
+            if (taskId) {
+                //update
+                var sql_update = `UPDATE Task SET taskCreateBy = ?, taskSummary = ?, taskDescription = ?
+                                , taskDueTimeLTE = ?, taskDueTimeGTE = ?, taskIsDone = ?,taskCreateAt = ?
+                                , taskWorkspaceId = ?, taskAssignTo = ? WHERE taskId = ?`;
 
-            db.query(
-                sql_update,
-                [
+                const result_u = await asyncQuery(db, sql_update, [
                     taskCreateBy,
                     taskSummary,
                     taskDescription,
@@ -34,21 +33,14 @@ class TaskController {
                     taskWorkspaceId,
                     taskAssignTo,
                     taskId,
-                ],
-                (err, result) => {
-                    if (err) throw err;
-                    res.send(result);
-                },
-            );
-        } else {
-            //create
-            var sql_create = `INSERT INTO Task (taskCreateBy, taskSummary, taskDescription, taskDueTimeLTE
-                            , taskDueTimeGTE, taskIsDone, taskCreateAt, taskWorkspaceId, taskAssignTo) 
-                            VALUES (?,?,?,?,?,?,?,?,?)`;
-
-            db.query(
-                sql_create,
-                [
+                ]);
+                res.json(result_u);
+            } else {
+                //create
+                var sql_create = `INSERT INTO Task (taskCreateBy, taskSummary, taskDescription, taskDueTimeLTE
+                                , taskDueTimeGTE, taskIsDone, taskCreateAt, taskWorkspaceId, taskAssignTo) 
+                                VALUES (?,?,?,?,?,?,?,?,?)`;
+                const result_c = await asyncQuery(db, sql_create, [
                     taskCreateBy,
                     taskSummary,
                     taskDescription,
@@ -58,26 +50,23 @@ class TaskController {
                     taskCreateAt,
                     taskWorkspaceId,
                     taskAssignTo,
-                ],
-                (err, result) => {
-                    try {
-                        if (err) throw err;
-                        res.send(result);
-                    } catch (error) {
-                        res.json(error);
-                    }
-                },
-            );
+                ]);
+                res.json(result_c);
+            }
+        } catch (error) {
+            res.send(error);
         }
     }
 
-    delete(req, res) {
+    async delete(req, res) {
         const taskId = req.query.taskId;
-        const sql = 'DELETE FROM Task WHERE taskId = ?';
-        db.query(sql, [taskId], (err, result) => {
-            if (err) throw err;
-            res.send(result);
-        });
+        try {
+            const sql = 'DELETE FROM Task WHERE taskId = ?';
+            const result = await asyncQuery(db, sql, [taskId]);
+            res.json(result);
+        } catch (error) {
+            res.json(error);
+        }
     }
 
     getOne(req, res) {
