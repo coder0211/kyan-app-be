@@ -7,18 +7,31 @@ class WorkSpaceController {
         const id = req.body.id;
         const name = req.body.name;
         const urlPhoto = req.body.urlPhoto;
+        const idUser = req.body.idUser;
         try {
             if (id) {
                 const sql_update =
                     'UPDATE Workspace SET workspaceName = ?, workspaceUrlPhoto = ? WHERE workspaceId = ?';
                 const result_update = await asyncQuery(db, sql_update, [name, urlPhoto, id]);
-                res.send(result_update);
+                res.send({
+                    workspaceId: id,
+                    workspaceName: name,
+                    workspaceUrlPhoto: urlPhoto,
+                });
             } else {
                 const codeJoin = nanoid(6);
                 const sql_create =
                     'INSERT INTO Workspace (workspaceName, workspaceUrlPhoto, workspaceCodeJoin) VALUES (?, ?, ?)';
                 const result_create = await asyncQuery(db, sql_create, [name, urlPhoto, codeJoin]);
-                res.send(result_create);
+
+                const sql_create_wspaceMember = `INSERT INTO WorkspaceMember(workspaceId, accountId, workspaceMemberIsOwner) VALUES (?,?,?)`;
+                await asyncQuery(db, sql_create_wspaceMember, [result_create.insertId, idUser, 1]);
+                res.send({
+                    workspaceId: result_create.insertId,
+                    workspaceName: name,
+                    workspaceUrlPhoto: urlPhoto,
+                    workspaceCodeJoin: codeJoin,
+                });
             }
         } catch (error) {
             res.send(error);
