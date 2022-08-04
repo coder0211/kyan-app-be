@@ -1,9 +1,10 @@
 const db = require('../configs/config-mysql');
+const asyncQuery = require('../helpers/async-mysql');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Account = require('../models/account');
 class AccountController {
-    createOrUpdate(req, res) {
+    async createOrUpdate(req, res) {
         console.log(req.body);
         var accountMail = req.body.accountMail;
         var accountDisplayName = req.body.accountDisplayName;
@@ -11,9 +12,8 @@ class AccountController {
         var accountToken = req.body.accountToken;
         var accountId = req.body.accountId;
         var sql = `INSERT INTO Account (accountId, accountMail, accountDisplayName, accountUrlPhoto, accountToken) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE accountDisplayName = ?, accountUrlPhoto = ?`;
-        db.query(
-            sql,
-            [
+        try {
+            const result = await asyncQuery(db, sql, [
                 accountId,
                 accountMail,
                 accountDisplayName,
@@ -21,28 +21,20 @@ class AccountController {
                 accountToken,
                 accountDisplayName,
                 accountUrlPhoto,
-            ],
-            function (err, result) {
-                if (err) throw err;
-                jwt.sign(
-                    { _id: accountId },
-                    'secretkey',
-                    { expiresIn: '100 days' },
-                    (err, token) => {
-                        if (err) throw err;
-                        let myAccount = new Account(
-                            accountId,
-                            accountMail,
-                            accountDisplayName,
-                            accountUrlPhoto,
-                            accountToken,
-                            token,
-                        );
-                        res.send(myAccount);
-                    },
+            ]);
+            if (result) {
+                let myAccount = new Account(
+                    accountId,
+                    accountMail,
+                    accountDisplayName,
+                    accountUrlPhoto,
+                    accountToken,
                 );
-            },
-        );
+                res.send(myAccount);
+            }
+        } catch (error) {
+            res.json(error);
+        }
     }
 
     login(req, res) {
@@ -81,16 +73,16 @@ class AccountController {
         });
     }
 
-    delete(req, res) {
+    async delete(req, res) {
         var accountMail = req.body.accountMail;
-        if (accountMail != null) {
-            const sql = 'DELETE FROM Account WHERE accountMail = ?';
-            db.query(sql, [accountMail], function (err, result) {
-                if (err) throw err;
-                res.send(result);
-            });
-        } else {
-            if (err) throw 'Account mail can not null';
+        const sql = 'DELETE FROM Account WHERE accountMail = ?';
+
+        try {
+            if (!accountMail) throw 'Account mail can not null';
+            const result = await asyncQuery(db, sql, [accountMail]);
+            res.json(result);
+        } catch (error) {
+            res.json(error);
         }
     }
 }

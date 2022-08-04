@@ -9,6 +9,6 @@ router.delete('/delete', auth, workSpaceController.delete);
 
 router.get('/get-one', auth, workSpaceController.getOne);
 
-router.get('/get-all', auth, workSpaceController.getAll);
+router.get('/get-all-by-id-user', auth, workSpaceController.getAll);
 
 module.exports = router;
