@@ -5,11 +5,22 @@ const server = http.createServer(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('../src/configs/config-mysql');
+const path = require('path');
+const multer = require('multer');
 const moment = require('moment-timezone');
 moment().tz('Asia/Ho_Chi_Minh').format();
 
 const port = process.env.PORT || 3001;
 const route = require('./routes');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, __dirname + '/public/images');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+});
+const upload = multer({ storage: storage });
 //Config request
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,13 +28,26 @@ app.use(bodyParser.json());
 
 // Config database
 
-db.connect(function (err) {
-    if (err) throw err;
-    console.log('Connected!');
-});
+// db.connect(function (err) {
+//     if (err) throw err;
+//     console.log('Connected!');
+// });
+
+//config static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 //TODO: Routes --- Declare ---
 app.use(route);
+
+app.post('/uploadfile', upload.single('image'), (req, res, next) => {
+    const file = req.file;
+    if (!file) {
+        const error = new Error('Upload file again!');
+        error.httpStatusCode = 400;
+        return next(error);
+    }
+    res.send(file);
+});
 
 //? ------
 
