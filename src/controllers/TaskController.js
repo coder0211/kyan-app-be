@@ -73,7 +73,7 @@ class TaskController {
     getAll = asyncHandler(async (req, res) => {
         const { taskAssignTo, taskDueTimeGTE } = req.query;
         const sql =
-            'SELECT * FROM Task AS T WHERE T.taskAssignTo = ? AND (DATEDIFF(DATE(T.taskDueTimeGTE), DATE(?)) >= 0)';
+            'SELECT * FROM Task AS T WHERE T.taskAssignTo = ? AND (DATEDIFF(DATE(T.taskDueTimeLTE), DATE(?)) >= 0)';
         db.query(sql, [taskAssignTo, taskDueTimeGTE], (err, result) => {
             if (err) throw err;
             res.send(result);
