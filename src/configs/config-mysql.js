@@ -6,6 +6,7 @@ const db = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
     charset: process.env.CHARSET,
+    dateStrings: 'DATETIME',
 });
 
 db.on('error', function (err) {
