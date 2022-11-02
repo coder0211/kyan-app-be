@@ -3,6 +3,7 @@ const router = express.Router();
 const accountRoute = require('./account.route');
 const taskRoute = require('./task.route');
 const workSpaceRoute = require('./work-space.route');
+const memberWorkSpaceRoute = require('./member-work-space.route');
 const uploadFile = require('./upload-file.route');
 
 router.get('/', (req, res) => {
@@ -11,5 +12,6 @@ router.get('/', (req, res) => {
 router.use('/account', accountRoute);
 router.use('/task', taskRoute);
 router.use('/work-space', workSpaceRoute);
+router.use('/member-work-space', memberWorkSpaceRoute);
 router.use('/file', uploadFile);
 module.exports = router;
