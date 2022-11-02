@@ -8,7 +8,6 @@ const db = require('../src/configs/config-mysql');
 const path = require('path');
 const moment = require('moment-timezone');
 moment().tz('Asia/Ho_Chi_Minh').format();
-
 const port = process.env.PORT || 3001;
 const route = require('./routes');
 
