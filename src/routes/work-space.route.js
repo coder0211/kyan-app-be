@@ -11,4 +11,6 @@ router.get('/get-one', auth, workSpaceController.getOne);
 
 router.get('/get-all-by-id-user', auth, workSpaceController.getAll);
 
+router.get('/get-by-code-join', auth, workSpaceController.getByCodeJoin);
+
 module.exports = router;

@@ -99,6 +99,19 @@ class WorkSpaceController {
             }
         });
     });
+
+    getByCodeJoin = asyncHandler(async (req, res) => {
+        const { codeJoin } = req.query;
+        const sql = 'SELECT * FROM Workspace WHERE workspaceCodeJoin = ?';
+        try {
+            db.query(sql, [codeJoin], (err, result) => {
+                if (err) throw err;
+                res.send(result);
+            });
+        } catch (e) {
+            throw e;
+        }
+    });
 }
 
 module.exports = new WorkSpaceController();
