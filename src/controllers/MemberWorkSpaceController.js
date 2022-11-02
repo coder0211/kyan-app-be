@@ -28,6 +28,20 @@ class MemberWorkSpaceController {
             throw e;
         }
     });
+
+    getAll = asyncHandler(async (req, res) => {
+        const { workspaceId } = req.query;
+        const sql =
+            'SELECT W.workspaceId, W.accountId, W.workspaceMemberIsOwner, A.accountMail, A.accountDisplayName, A.accountUrlPhoto FROM WorkspaceMember as W INNER JOIN Account as A ON W.accountId = A.accountId WHERE W.workspaceId = ?';
+        try {
+            db.query(sql, [workspaceId], (err, result) => {
+                if (err) throw err;
+                res.send(result);
+            });
+        } catch (e) {
+            throw e;
+        }
+    });
 }
 
 module.exports = new MemberWorkSpaceController();

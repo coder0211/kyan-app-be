@@ -7,4 +7,6 @@ router.post('/create', auth, memberWorkSpaceController.create);
 
 router.delete('/delete', auth, memberWorkSpaceController.delete);
 
+router.get('/get-all', auth, memberWorkSpaceController.getAll);
+
 module.exports = router;
