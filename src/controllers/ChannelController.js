@@ -12,7 +12,7 @@ class ChannelController {
         var channelName = req.body.channelName;
         var channelIsPrivate = req.body.channelIsPrivate;
         var channelWorkspaceId = req.body.channelWorkspaceId;
-        var sql = `INSERT INTO Account (channelId, channelName, channelIsPrivate, channelWorkspaceId) VALUES (?, ?, ?, ?) 
+        var sql = `INSERT INTO Channel (channelId, channelName, channelIsPrivate, channelWorkspaceId) VALUES (?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE channelName = ?, channelIsPrivate = ?, channelWorkspaceId = ?`;
 
         const result = await asyncQuery(db, sql, [
