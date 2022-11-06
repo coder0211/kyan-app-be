@@ -4,7 +4,6 @@ const accountRoute = require('./account.route');
 const taskRoute = require('./task.route');
 const workSpaceRoute = require('./work-space.route');
 const memberWorkSpaceRoute = require('./member-work-space.route');
-
 const channelRoute = require('./channel.route');
 const channelMemberRoute = require('./channel-member.route');
 const channelMessageRoute = require('./channel-message.route');
@@ -13,7 +12,7 @@ const conversationMemberRoute = require('./conversation-member.route');
 const conversationMessageRoute = require('./conversation-message.route');
 
 const uploadFile = require('./upload-file.route');
-const attachmentTask = require('./attachment-task.route');
+const attachmentTask = require('./attachment-task.router');
 
 router.get('/', (req, res) => {
     res.send('Welcome to kyan app!');
