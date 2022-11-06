@@ -8,16 +8,15 @@ require('dotenv').config();
 class ChannelMessageController {
     createOrUpdate = asyncHandler(async (req, res) => {
         console.log(req.body);
+        console.log('channel - message');
 
         var channelMessageId = req.body.channelMessageId;
         var channelMessageContent = req.body.channelMessageContent;
         var channelMessageTimeSend = req.body.channelMessageTimeSend;
         var channelMessageChannelId = req.body.channelMessageChannelId;
         var channelMessageSenderId = req.body.channelMessageSenderId;
-        var accountId = req.body.accountId;
-        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId) 
-        VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?,`;
+        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId) VALUES (?, ?, ?, ?, ?) 
+        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?`;
 
         const result = await asyncQuery(db, sql, [
             channelMessageId,

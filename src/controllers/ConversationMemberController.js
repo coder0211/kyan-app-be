@@ -33,6 +33,7 @@ class ConversationMemberController {
     });
 
     delete = asyncHandler(async (req, res) => {
+        console.log(req.body);
         var conversationId = req.body.conversationId;
         var accountId = req.body.accountId;
         const sql = 'DELETE FROM ConversationMember WHERE conversationId = ? and accountId = ?';

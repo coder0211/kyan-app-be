@@ -15,7 +15,7 @@ class ConversationMemberController {
         var conversationMessageConversationId = req.body.conversationMessageConversationId;
         var conversationMessageSenderId = req.body.conversationMessageSenderId;
         var sql = `INSERT INTO ConversationMessage (conversationMessageId, conversationMessageContent, conversationMessageTimeSend, conversationMessageConversationId, conversationMessageSenderId) 
-        VALUES (?, ?, ?) 
+        VALUES (?, ?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE conversationMessageContent = ?,conversationMessageTimeSend = ?, conversationMessageConversationId = ?, conversationMessageSenderId = ?`;
 
         const result = await asyncQuery(db, sql, [
@@ -23,9 +23,11 @@ class ConversationMemberController {
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
+            conversationMessageSenderId,
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
+            conversationMessageSenderId,
         ]);
         res.send(result);
     });
