@@ -8,7 +8,7 @@ class WorkSpaceController {
     _membersWorkSpace = function (workspaceId) {
         return new Promise((resolve) => {
             const sql =
-                'SELECT A.accountId,A.accountMail,A.accountDisplayName,A.accountUrlPhoto FROM WorkspaceMember AS W INNER JOIN Account AS A ON W.accountId = A.accountId WHERE workspaceId = ?';
+                'SELECT A.accountId,A.accountMail,A.accountDisplayName,A.accountUrlPhoto, W.workspaceMemberIsOwner FROM WorkspaceMember AS W INNER JOIN Account AS A ON W.accountId = A.accountId WHERE workspaceId = ?';
             db.query(sql, [workspaceId], function (err, result) {
                 if (err) throw err;
                 resolve(result);
