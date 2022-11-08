@@ -22,10 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Config database
-// db.connect(function (err) {
-//     if (err) throw err;
-//     console.log('Connected!');
-// });
+db.connect(function (err) {
+    if (err) throw err;
+    console.log('Connected!');
+});
 
 // config static folder
 app.use(express.static(path.join(__dirname, 'public')));
