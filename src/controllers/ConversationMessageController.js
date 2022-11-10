@@ -7,28 +7,21 @@ require('dotenv').config();
 
 class ConversationMemberController {
     createOrUpdate = asyncHandler(async (req, res) => {
-        console.log(req.body);
-
-        var conversationMessageId = req.body.conversationMessageId;
-        var conversationMessageContent = req.body.conversationMessageContent;
-        var conversationMessageTimeSend = req.body.conversationMessageTimeSend;
-        var conversationMessageConversationId = req.body.conversationMessageConversationId;
-        var conversationMessageSenderId = req.body.conversationMessageSenderId;
-        var sql = `INSERT INTO ConversationMessage (conversationMessageId, conversationMessageContent, conversationMessageTimeSend, conversationMessageConversationId, conversationMessageSenderId) 
-        VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE conversationMessageContent = ?,conversationMessageTimeSend = ?, conversationMessageConversationId = ?, conversationMessageSenderId = ?`;
-
-        const result = await asyncQuery(db, sql, [
+        var {
             conversationMessageId,
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
+        } = req.body;
+        const result = await this.postMessageConversation(
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
-        ]);
+            conversationMessageId,
+        );
+
         res.send(result);
     });
 
@@ -47,6 +40,31 @@ class ConversationMemberController {
         const result = await asyncQuery(db, sql, [conversationMessageId]);
         res.json(result);
     });
+
+    postMessageConversation = async (
+        conversationMessageContent,
+        conversationMessageTimeSend,
+        conversationMessageConversationId,
+        conversationMessageSenderId,
+        conversationMessageId = null,
+    ) => {
+        var sql = `INSERT INTO ConversationMessage (conversationMessageId, conversationMessageContent, conversationMessageTimeSend, conversationMessageConversationId, conversationMessageSenderId) 
+        VALUES (?, ?, ?, ?, ?) 
+        ON DUPLICATE KEY UPDATE conversationMessageContent = ?,conversationMessageTimeSend = ?, conversationMessageConversationId = ?, conversationMessageSenderId = ?`;
+
+        const result = await asyncQuery(db, sql, [
+            conversationMessageId,
+            conversationMessageContent,
+            conversationMessageTimeSend,
+            conversationMessageConversationId,
+            conversationMessageSenderId,
+            conversationMessageContent,
+            conversationMessageTimeSend,
+            conversationMessageConversationId,
+            conversationMessageSenderId,
+        ]);
+        return result;
+    };
 }
 
 module.exports = new ConversationMemberController();

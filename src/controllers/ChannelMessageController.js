@@ -7,28 +7,19 @@ require('dotenv').config();
 
 class ChannelMessageController {
     createOrUpdate = asyncHandler(async (req, res) => {
-        console.log(req.body);
-        console.log('channel - message');
-
         var channelMessageId = req.body.channelMessageId;
         var channelMessageContent = req.body.channelMessageContent;
         var channelMessageTimeSend = req.body.channelMessageTimeSend;
         var channelMessageChannelId = req.body.channelMessageChannelId;
         var channelMessageSenderId = req.body.channelMessageSenderId;
-        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId) VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?`;
 
-        const result = await asyncQuery(db, sql, [
+        const result = await this.postMessageChannel(
+            channelMessageContent,
+            channelMessageTimeSend,
+            channelMessageChannelId,
+            channelMessageSenderId,
             channelMessageId,
-            channelMessageContent,
-            channelMessageTimeSend,
-            channelMessageChannelId,
-            channelMessageSenderId,
-            channelMessageContent,
-            channelMessageTimeSend,
-            channelMessageChannelId,
-            channelMessageSenderId,
-        ]);
+        );
         res.send(result);
     });
 
@@ -47,6 +38,30 @@ class ChannelMessageController {
         const result = await asyncQuery(db, sql, [channelMessageId]);
         res.json(result);
     });
+
+    postMessageChannel = async (
+        channelMessageContent,
+        channelMessageTimeSend,
+        channelMessageChannelId,
+        channelMessageSenderId,
+        channelMessageId = null,
+    ) => {
+        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId) VALUES (?, ?, ?, ?, ?) 
+        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?`;
+
+        const result = await asyncQuery(db, sql, [
+            channelMessageId,
+            channelMessageContent,
+            channelMessageTimeSend,
+            channelMessageChannelId,
+            channelMessageSenderId,
+            channelMessageContent,
+            channelMessageTimeSend,
+            channelMessageChannelId,
+            channelMessageSenderId,
+        ]);
+        return result;
+    };
 }
 
 module.exports = new ChannelMessageController();
