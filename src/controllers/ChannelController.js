@@ -27,6 +27,18 @@ class ChannelController {
         res.send(result);
     });
 
+    getMemberChannelByIdChannel = (accountId, channelId) => {
+        const sql =
+            'SELECT A.* FROM ChannelMember M LEFT JOIN Account A ON M.accountId = A.accountId WHERE M.channelId = ? AND EXISTS (SELECT * FROM ChannelMember MC WHERE MC.channelId = ? AND MC.accountId = ?);';
+
+        return new Promise((resolve) => {
+            db.query(sql, [channelId, channelId, accountId], function (err, result) {
+                if (err) throw err;
+                resolve(result);
+            });
+        });
+    };
+
     getOne = asyncHandler(async (req, res) => {
         var channelId = req.params.channelId;
         if (channelId != null) {
@@ -39,10 +51,34 @@ class ChannelController {
     });
 
     getAll = asyncHandler(async (req, res) => {
-        db.query('SELECT * FROM Channel', function (err, result) {
-            if (err) throw err;
-            res.send(result);
-        });
+        var channelWorkspaceId = req.query.channelWorkspaceId;
+        var accountId = req.query.accountId;
+        const getMemberChannelByIdChannel = this.getMemberChannelByIdChannel;
+        if (channelWorkspaceId != -1) {
+            db.query(
+                'SELECT * FROM Channel WHERE channelWorkspaceId	 = ?',
+                [channelWorkspaceId],
+                async function (err, result) {
+                    if (err) throw err;
+                    if (result.length > 0) {
+                        var list = [],
+                            index = 0;
+                        for (let i = 0; i < result.length; i++) {
+                            var element = result[i];
+                            var listMember = await getMemberChannelByIdChannel(
+                                accountId,
+                                element.channelId,
+                            );
+                            if (listMember.length > 0 || !element.isPrivate) {
+                                list.push(element);
+                                list[index++]['listMember'] = listMember;
+                            }
+                        }
+                        res.send(list);
+                    } else res.send([]);
+                },
+            );
+        } else res.send([]);
     });
 
     delete = asyncHandler(async (req, res) => {

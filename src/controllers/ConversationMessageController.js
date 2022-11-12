@@ -65,6 +65,20 @@ class ConversationMemberController {
         ]);
         return result;
     };
+
+    getOne = function (req, res) {
+        var conversationId = req.query.conversationId;
+        var offset = req.query.offset;
+        var limit = req.query.limit;
+        db.query(
+            'SELECT * FROM ConversationMessage MC LEFT JOIN Account A ON MC.conversationMessageSenderId = A.accountId WHERE conversationMessageConversationId = ? ORDER BY conversationMessageId DESC LIMIT ? OFFSET ?',
+            [parseInt(conversationId), parseInt(limit), parseInt(offset)],
+            function (err, result) {
+                if (err) throw err;
+                res.send(result);
+            },
+        );
+    };
 }
 
 module.exports = new ConversationMemberController();

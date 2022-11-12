@@ -62,6 +62,19 @@ class ChannelMessageController {
         ]);
         return result;
     };
+    getOne = function (req, res) {
+        var channelMessageChannelId = req.query.channelMessageChannelId;
+        var offset = req.query.offset;
+        var limit = req.query.limit;
+        db.query(
+            'SELECT * FROM ChannelMessage MC LEFT JOIN Account A ON MC.channelMessageSenderId = A.accountId WHERE channelMessageChannelId = ? ORDER BY channelMessageId DESC LIMIT ? OFFSET ?',
+            [parseInt(channelMessageChannelId), parseInt(limit), parseInt(offset)],
+            function (err, result) {
+                if (err) throw err;
+                res.send(result);
+            },
+        );
+    };
 }
 
 module.exports = new ChannelMessageController();
