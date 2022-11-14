@@ -6,8 +6,6 @@ const channelMessageController = require('../controllers/ChannelMessageControlle
 
 router.get('/get-all', auth, channelMessageController.getAll);
 
-router.get('/get-one', auth, channelMessageController.getOne);
-
 router.post('/create-or-update', auth, channelMessageController.createOrUpdate);
 
 router.delete('/delete', auth, channelMessageController.delete);
