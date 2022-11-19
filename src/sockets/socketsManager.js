@@ -50,12 +50,15 @@ const socketManager = (io) => {
                 conversationMessageSenderId,
             );
             //emit to client
-            io.to(prefix.conversation + idConversation).emit('message:conversation:receive', {
-                conversationMessageContent,
-                conversationMessageConversationId,
-                conversationMessageSenderId,
-                conversationMessageTimeSend,
-            });
+            io.to(prefix.conversation + socket.handshake.query.idConversation).emit(
+                'message:conversation:receive',
+                {
+                    conversationMessageContent,
+                    conversationMessageConversationId,
+                    conversationMessageSenderId,
+                    conversationMessageTimeSend,
+                },
+            );
         });
         socket.on('message:channel:send', function (payload) {
             var channelMessageContent = payload.channelMessageContent;
@@ -68,12 +71,15 @@ const socketManager = (io) => {
                 channelMessageChannelId,
                 channelMessageSenderId,
             );
-            io.to(prefix.channel + idChannel).emit('message:channel:receive', {
-                channelMessageContent,
-                channelMessageTimeSend,
-                channelMessageChannelId,
-                channelMessageSenderId,
-            });
+            io.to(prefix.channel + socket.handshake.query.idChannel).emit(
+                'message:channel:receive',
+                {
+                    channelMessageContent,
+                    channelMessageTimeSend,
+                    channelMessageChannelId,
+                    channelMessageSenderId,
+                },
+            );
         });
     });
 };

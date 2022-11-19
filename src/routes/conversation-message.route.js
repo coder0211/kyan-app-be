@@ -6,8 +6,6 @@ const conversationMessageController = require('../controllers/ConversationMessag
 
 router.get('/get-all', auth, conversationMessageController.getAll);
 
-router.get('/get-one', auth, conversationMessageController.getOne);
-
 router.post('/create-or-update', auth, conversationMessageController.createOrUpdate);
 
 router.delete('/delete', auth, conversationMessageController.delete);
