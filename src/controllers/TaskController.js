@@ -79,6 +79,39 @@ class TaskController {
             res.send(result);
         });
     });
+
+    totalTaskInWorkSpaceByIdAccount = asyncHandler(async (req, res) => {
+        const workSpaceId = req.query.workSpaceId;
+        const accountId = req.query.accountId;
+        const sql =
+            'SELECT COUNT(*) as TotalTask FROM Task WHERE taskWorkspaceId = ? and taskAssignTo = ?';
+        const result = await asyncQuery(db, sql, [workSpaceId, accountId]);
+        res.json(result);
+    });
+
+    totalTaskDoneInWorkSpaceByIdAccount = asyncHandler(async (req, res) => {
+        const workSpaceId = req.query.workSpaceId;
+        const accountId = req.query.accountId;
+        const sql =
+            'SELECT COUNT(*) as TotalTask FROM Task WHERE taskWorkspaceId = ? and taskAssignTo = ? AND taskIsDone = 1';
+        const result = await asyncQuery(db, sql, [workSpaceId, accountId]);
+        res.json(result);
+    });
+
+    totalTaskInWorkSpace = asyncHandler(async (req, res) => {
+        const workSpaceId = req.query.workSpaceId;
+        const sql = 'SELECT COUNT(*) as TotalTask FROM Task WHERE taskWorkspaceId = ?';
+        const result = await asyncQuery(db, sql, [workSpaceId]);
+        res.json(result);
+    });
+
+    totalTaskDoneInWorkSpace = asyncHandler(async (req, res) => {
+        const workSpaceId = req.query.workSpaceId;
+        const sql =
+            'SELECT COUNT(*) as TotalTask FROM Task WHERE taskWorkspaceId = ? AND taskIsDone = 1';
+        const result = await asyncQuery(db, sql, [workSpaceId]);
+        res.json(result);
+    });
 }
 
 module.exports = new TaskController();

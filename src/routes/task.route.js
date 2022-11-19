@@ -11,4 +11,16 @@ router.get('/get-one', auth, taskController.getOne);
 
 router.get('/get-all', auth, taskController.getAll);
 
+router.get('/get-total-task-by-account-id', auth, taskController.totalTaskInWorkSpaceByIdAccount);
+
+router.get(
+    '/get-total-task-done-by-account-id',
+    auth,
+    taskController.totalTaskDoneInWorkSpaceByIdAccount,
+);
+
+router.get('/get-total-task', auth, taskController.totalTaskInWorkSpace);
+
+router.get('/get-total-task-done', auth, taskController.totalTaskDoneInWorkSpace);
+
 module.exports = router;
