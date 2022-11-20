@@ -42,12 +42,14 @@ const socketManager = (io) => {
             var conversationMessageConversationId = payload.conversationMessageConversationId;
             var conversationMessageSenderId = payload.conversationMessageSenderId;
             var conversationMessageTimeSend = payload.conversationMessageTimeSend;
+            var attachmentUrl = payload.attachmentUrl;
             //controller save to database
             conversationMessageController.postMessageConversation(
                 conversationMessageContent,
                 conversationMessageTimeSend,
                 conversationMessageConversationId,
                 conversationMessageSenderId,
+                attachmentUrl,
             );
             //emit to client
             io.to(prefix.conversation + socket.handshake.query.idConversation).emit(
@@ -57,6 +59,7 @@ const socketManager = (io) => {
                     conversationMessageConversationId,
                     conversationMessageSenderId,
                     conversationMessageTimeSend,
+                    attachmentUrl,
                 },
             );
         });
@@ -65,11 +68,13 @@ const socketManager = (io) => {
             var channelMessageTimeSend = payload.channelMessageTimeSend;
             var channelMessageChannelId = payload.channelMessageChannelId;
             var channelMessageSenderId = payload.channelMessageSenderId;
+            var attachmentUrl = payload.attachmentUrl;
             channelMessageController.postMessageChannel(
                 channelMessageContent,
                 channelMessageTimeSend,
                 channelMessageChannelId,
                 channelMessageSenderId,
+                attachmentUrl,
             );
             io.to(prefix.channel + socket.handshake.query.idChannel).emit(
                 'message:channel:receive',
@@ -78,6 +83,7 @@ const socketManager = (io) => {
                     channelMessageTimeSend,
                     channelMessageChannelId,
                     channelMessageSenderId,
+                    attachmentUrl,
                 },
             );
         });

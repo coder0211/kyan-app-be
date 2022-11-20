@@ -13,12 +13,14 @@ class ConversationMemberController {
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
+            attachmentUrl,
         } = req.body;
         const result = await this.postMessageConversation(
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
+            attachmentUrl,
             conversationMessageId,
         );
 
@@ -53,11 +55,12 @@ class ConversationMemberController {
         conversationMessageTimeSend,
         conversationMessageConversationId,
         conversationMessageSenderId,
+        attachmentUrl,
         conversationMessageId = null,
     ) => {
-        var sql = `INSERT INTO ConversationMessage (conversationMessageId, conversationMessageContent, conversationMessageTimeSend, conversationMessageConversationId, conversationMessageSenderId) 
-        VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE conversationMessageContent = ?,conversationMessageTimeSend = ?, conversationMessageConversationId = ?, conversationMessageSenderId = ?`;
+        var sql = `INSERT INTO ConversationMessage (conversationMessageId, conversationMessageContent, conversationMessageTimeSend, conversationMessageConversationId, conversationMessageSenderId, attachmentUrl) 
+        VALUES (?, ?, ?, ?, ?, ?) 
+        ON DUPLICATE KEY UPDATE conversationMessageContent = ?,conversationMessageTimeSend = ?, conversationMessageConversationId = ?, conversationMessageSenderId = ?, attachmentUrl = ?`;
 
         const result = await asyncQuery(db, sql, [
             conversationMessageId,
@@ -65,10 +68,12 @@ class ConversationMemberController {
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
+            attachmentUrl,
             conversationMessageContent,
             conversationMessageTimeSend,
             conversationMessageConversationId,
             conversationMessageSenderId,
+            attachmentUrl,
         ]);
         return result;
     };
