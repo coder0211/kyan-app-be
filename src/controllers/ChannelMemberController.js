@@ -30,6 +30,14 @@ class ChannelMemberController {
         });
     });
 
+    getMemberByChannelId = asyncHandler(async (req, res) => {
+        const channelId = req.query.channelId;
+        const sql =
+            'SELECT A.* FROM ChannelMember as C INNER JOIN Account as A ON A.accountId=C.accountId WHERE C.channelId = ?';
+        const result = await asyncQuery(db, sql, [channelId]);
+        res.json(result);
+    });
+
     delete = asyncHandler(async (req, res) => {
         var channelId = req.body.channelId;
         var accountId = req.body.accountId;

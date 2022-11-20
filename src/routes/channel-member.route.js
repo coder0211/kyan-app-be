@@ -6,6 +6,8 @@ const channelMemberController = require('../controllers/ChannelMemberController'
 
 router.get('/get-all', auth, channelMemberController.getAll);
 
+router.get('/get-member-by-channel-id', auth, channelMemberController.getMemberByChannelId);
+
 router.post('/create-or-update', auth, channelMemberController.createOrUpdate);
 
 router.delete('/delete', auth, channelMemberController.delete);
