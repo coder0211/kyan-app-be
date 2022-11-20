@@ -10,6 +10,7 @@ const channelMessageRoute = require('./channel-message.route');
 const conversationRoute = require('./conversation.route');
 const conversationMemberRoute = require('./conversation-member.route');
 const conversationMessageRoute = require('./conversation-message.route');
+const taskCommentRoute = require('./task-comment.route');
 
 const uploadFile = require('./upload-file.route');
 const attachmentTask = require('./attachment-task.router');
@@ -27,6 +28,7 @@ router.use('/channel-message', channelMessageRoute);
 router.use('/conversation', conversationRoute);
 router.use('/conversation-member', conversationMemberRoute);
 router.use('/conversation-message', conversationMessageRoute);
+router.use('/task-comment', taskCommentRoute);
 
 router.use('/file', uploadFile);
 router.use('/attachment-task', attachmentTask);
