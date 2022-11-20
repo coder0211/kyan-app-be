@@ -12,12 +12,14 @@ class ChannelMessageController {
         var channelMessageTimeSend = req.body.channelMessageTimeSend;
         var channelMessageChannelId = req.body.channelMessageChannelId;
         var channelMessageSenderId = req.body.channelMessageSenderId;
+        var attachmentUrl = req.body.attachmentUrl;
 
         const result = await this.postMessageChannel(
             channelMessageContent,
             channelMessageTimeSend,
             channelMessageChannelId,
             channelMessageSenderId,
+            attachmentUrl,
             channelMessageId,
         );
         res.send(result);
@@ -51,10 +53,11 @@ class ChannelMessageController {
         channelMessageTimeSend,
         channelMessageChannelId,
         channelMessageSenderId,
+        attachmentUrl,
         channelMessageId = null,
     ) => {
-        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId) VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?`;
+        var sql = `INSERT INTO ChannelMessage (channelMessageId, channelMessageContent, channelMessageTimeSend, channelMessageChannelId, channelMessageSenderId, attachmentUrl) VALUES (?, ?, ?, ?, ?, ?) 
+        ON DUPLICATE KEY UPDATE channelMessageContent = ?, channelMessageTimeSend = ?,channelMessageChannelId = ?, channelMessageSenderId = ?, attachmentUrl = ?`;
 
         const result = await asyncQuery(db, sql, [
             channelMessageId,
@@ -62,10 +65,12 @@ class ChannelMessageController {
             channelMessageTimeSend,
             channelMessageChannelId,
             channelMessageSenderId,
+            attachmentUrl,
             channelMessageContent,
             channelMessageTimeSend,
             channelMessageChannelId,
             channelMessageSenderId,
+            attachmentUrl,
         ]);
         return result;
     };
