@@ -40,7 +40,8 @@ class ChannelController {
     };
 
     getOne = asyncHandler(async (req, res) => {
-        var channelId = req.params.channelId;
+        var channelId = req.query.channelId;
+        console.log(channelId);
         if (channelId != null) {
             var sql = 'SELECT * FROM Channel WHERE channelId = ?';
             db.query(sql, [channelId], function (err, result) {
