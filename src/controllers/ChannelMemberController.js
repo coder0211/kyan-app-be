@@ -33,7 +33,7 @@ class ChannelMemberController {
     getMemberByChannelId = asyncHandler(async (req, res) => {
         const channelId = req.query.channelId;
         const sql =
-            'SELECT A.* FROM ChannelMember as C INNER JOIN Account as A ON A.accountId=C.accountId WHERE C.channelId = ?';
+            'SELECT A.*,C.channelMemberOwner FROM ChannelMember as C INNER JOIN Account as A ON A.accountId=C.accountId WHERE C.channelId = ?';
         const result = await asyncQuery(db, sql, [channelId]);
         res.json(result);
     });

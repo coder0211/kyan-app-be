@@ -6,6 +6,8 @@ const channelController = require('../controllers/ChannelController');
 
 router.get('/get-all', auth, channelController.getAll);
 
+router.get('/get-one', auth, channelController.getOne);
+
 router.post('/create-or-update', auth, channelController.createOrUpdate);
 
 router.delete('/delete', auth, channelController.delete);
