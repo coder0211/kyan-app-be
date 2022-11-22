@@ -42,17 +42,16 @@ class ChannelController {
     getOne = asyncHandler(async (req, res) => {
         var channelId = req.query.channelId;
         console.log(channelId);
-        if (channelId != null) {
-            var sql = 'SELECT * FROM Channel WHERE channelId = ?';
-            db.query(sql, [channelId], async function (err, result) {
-                if (err) throw err;
-                var listMember = await getMemberChannelByIdChannel(accountId, element.channelId);
-                if (listMember.length > 0 || !result[0].isPrivate) {
-                    result[0]['listMember'] = listMember;
-                }
-                res.send(result[0]);
-            });
+        const getMemberChannelByIdChannel = this.getMemberChannelByIdChannel;
+        if (channelId == null) {
+            res.send('Error channelId not NULL');
         }
+        var sql = 'SELECT * FROM Channel WHERE channelId = ?';
+        var sql_channelMember = 'SELECT * FROM ChannelMember WHERE channelId = ?';
+        const channel = await asyncQuery(db, sql, [channelId]);
+        const channelMember = await asyncQuery(db, sql_channelMember, [channelId]);
+        channel[0]['members'] = channelMember;
+        res.send(channel[0]);
     });
 
     getAll = asyncHandler(async (req, res) => {
