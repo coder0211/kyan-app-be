@@ -44,8 +44,12 @@ class ChannelController {
         console.log(channelId);
         if (channelId != null) {
             var sql = 'SELECT * FROM Channel WHERE channelId = ?';
-            db.query(sql, [channelId], function (err, result) {
+            db.query(sql, [channelId], async function (err, result) {
                 if (err) throw err;
+                var listMember = await getMemberChannelByIdChannel(accountId, element.channelId);
+                if (listMember.length > 0 || !result[0].isPrivate) {
+                    result[0]['listMember'] = listMember;
+                }
                 res.send(result[0]);
             });
         }
