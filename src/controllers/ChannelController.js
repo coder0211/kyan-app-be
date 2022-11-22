@@ -47,7 +47,8 @@ class ChannelController {
             res.send('Error channelId not NULL');
         }
         var sql = 'SELECT * FROM Channel WHERE channelId = ?';
-        var sql_channelMember = 'SELECT * FROM ChannelMember WHERE channelId = ?';
+        var sql_channelMember =
+            'SELECT A.*,C.channelMemberOwner FROM ChannelMember as C INNER JOIN Account as A ON A.accountId = C.accountId WHERE channelId = ?';
         const channel = await asyncQuery(db, sql, [channelId]);
         const channelMember = await asyncQuery(db, sql_channelMember, [channelId]);
         channel[0]['members'] = channelMember;
