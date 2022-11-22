@@ -2,10 +2,11 @@ const db = require('../configs/config-mysql');
 const asyncHandler = require('express-async-handler');
 const e = require('express');
 require('dotenv').config();
+const asyncQuery = require('../helpers/async-mysql');
 class AttachmentTaskController {
     addFile = asyncHandler(async (req, res) => {
-        const { taskId, attachmentUrl } = req.params;
-        sql = 'INSERT INTO AttachmentTask( taskId, attachmentUrl) VALUES (?,?)';
+        const { taskId, attachmentUrl } = req.body;
+        const sql = 'INSERT INTO AttachmentTask( taskId, attachmentUrl) VALUES (?,?)';
         try {
             db.query(sql, [taskId, attachmentUrl], (error, result) => {
                 if (error) throw error;
@@ -17,8 +18,8 @@ class AttachmentTaskController {
     });
 
     getByTaskId = asyncHandler(async (req, res) => {
-        const taskId = req.params.taskId;
-        sql = 'SELECT * FROM AttachmentTask WHERE taskId = ?';
+        const taskId = req.query.taskId;
+        const sql = 'SELECT * FROM AttachmentTask WHERE taskId = ?';
         try {
             db.query(sql, [taskId], (error, result) => {
                 if (error) throw error;
@@ -31,7 +32,7 @@ class AttachmentTaskController {
 
     delete = asyncHandler(async (req, res) => {
         var attachmentId = req.body.attachmentId;
-        const sql = 'DELETE FROM AttachmentTask WHERE attachmentId = ? ';
+        const sql = 'DELETE FROM AttachmentTask WHERE attachmentId =?';
 
         if (!attachmentId) throw 'attachmentId can not null';
         const result = await asyncQuery(db, sql, [attachmentId]);
