@@ -8,7 +8,11 @@ router.get('/get-all', auth, channelController.getAll);
 
 router.get('/get-one', auth, channelController.getOne);
 
-router.get('/get-all-by-account-id', auth, channelController.getAllChannelByAccountId);
+router.get(
+    '/get-all-by-account-workspace',
+    auth,
+    channelController.getAllChannelByAccountWorkSpace,
+);
 
 router.post('/create-or-update', auth, channelController.createOrUpdate);
 
