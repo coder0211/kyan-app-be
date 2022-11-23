@@ -11,6 +11,8 @@ router.get('/get-one', auth, taskController.getOne);
 
 router.get('/get-all-by-account-workspace', auth, taskController.getAllByAccountWorkspace);
 
+router.get('/get-all-by-workspace', auth, taskController.getAllByWorkspace);
+
 router.get('/get-total-task-by-account-id', auth, taskController.totalTaskInWorkSpaceByIdAccount);
 
 router.get(

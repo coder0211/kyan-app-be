@@ -79,6 +79,15 @@ class TaskController {
         });
     });
 
+    getAllByWorkspace = asyncHandler(async (req, res) => {
+        const { workSpaceId } = req.query;
+        const sql = 'SELECT * FROM Task AS T WHERE  T.taskWorkspaceId = ?';
+        db.query(sql, [workSpaceId], (err, result) => {
+            if (err) throw err;
+            res.send(result);
+        });
+    });
+
     totalTaskInWorkSpaceByIdAccount = asyncHandler(async (req, res) => {
         const workSpaceId = req.query.workSpaceId;
         const accountId = req.query.accountId;
