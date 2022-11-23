@@ -70,19 +70,10 @@ class TaskController {
         });
     });
 
-    getAllByAccountId = asyncHandler(async (req, res) => {
-        const { taskAssignTo } = req.query;
-        const sql = 'SELECT * FROM Task AS T WHERE T.taskAssignTo = ?';
-        db.query(sql, [taskAssignTo], (err, result) => {
-            if (err) throw err;
-            res.send(result);
-        });
-    });
-
-    getAllByWorkspaceId = asyncHandler(async (req, res) => {
-        const { workSpaceId } = req.query;
-        const sql = 'SELECT * FROM Task AS T WHERE T.taskWorkspaceId  = ?';
-        db.query(sql, [workSpaceId], (err, result) => {
+    getAllByAccountWorkspace = asyncHandler(async (req, res) => {
+        const { taskAssignTo, workSpaceId } = req.query;
+        const sql = 'SELECT * FROM Task AS T WHERE T.taskAssignTo = ? AND T.taskWorkspaceId = ?';
+        db.query(sql, [taskAssignTo, workSpaceId], (err, result) => {
             if (err) throw err;
             res.send(result);
         });
