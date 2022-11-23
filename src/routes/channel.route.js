@@ -8,6 +8,8 @@ router.get('/get-all', auth, channelController.getAll);
 
 router.get('/get-one', auth, channelController.getOne);
 
+router.get('/get-all-by-account-id', auth, channelController.getAllChannelByAccountId);
+
 router.post('/create-or-update', auth, channelController.createOrUpdate);
 
 router.delete('/delete', auth, channelController.delete);

@@ -9,7 +9,9 @@ router.delete('/delete', auth, taskController.delete);
 
 router.get('/get-one', auth, taskController.getOne);
 
-router.get('/get-all', auth, taskController.getAll);
+router.get('/get-all-by-account-id', auth, taskController.getAllByAccountId);
+
+router.get('/get-all-by-workspace-id', auth, taskController.getAllByWorkspaceId);
 
 router.get('/get-total-task-by-account-id', auth, taskController.totalTaskInWorkSpaceByIdAccount);
 
