@@ -86,6 +86,15 @@ class ChannelController {
         } else res.send([]);
     });
 
+    getAllChannelByAccountWorkSpace = asyncHandler(async (req, res) => {
+        var accountId = req.query.accountId;
+        var workspaceId = req.query.workspaceId;
+        const sql =
+            'SELECT C.*,CM.channelMemberOwner FROM Channel as C INNER JOIN ChannelMember as CM ON C.channelId = CM.channelId WHERE CM.accountId = ? AND C.channelWorkspaceId = ?';
+        const result = await asyncQuery(db, sql, [accountId, workspaceId]);
+        res.send(result);
+    });
+
     delete = asyncHandler(async (req, res) => {
         var channelId = req.body.channelId;
         const sql = 'DELETE FROM Channel WHERE channelId = ?';
