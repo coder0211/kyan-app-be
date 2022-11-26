@@ -88,6 +88,15 @@ class TaskController {
         });
     });
 
+    getTaskByTime = asyncHandler(async (req, res) => {
+        const { timeStart, timeEnd } = req.query;
+        const sql = 'SELECT * FROM Task WHERE taskDueTimeGTE >= ? AND taskDueTimeGTE <= ?';
+        db.query(sql, [timeStart, timeEnd], (err, result) => {
+            if (err) throw err;
+            res.send(result);
+        });
+    });
+
     totalTaskInWorkSpaceByIdAccount = asyncHandler(async (req, res) => {
         const workSpaceId = req.query.workSpaceId;
         const accountId = req.query.accountId;
