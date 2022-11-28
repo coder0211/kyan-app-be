@@ -97,6 +97,15 @@ class TaskController {
         });
     });
 
+    getTaskByDay = asyncHandler(async (req, res) => {
+        const { day } = req.query;
+        const sql = 'SELECT * FROM Task WHERE CAST(taskDueTimeGTE AS DATE) = ?';
+        db.query(sql, [day], (err, result) => {
+            if (err) throw err;
+            res.send(result);
+        });
+    });
+
     totalTaskInWorkSpaceByIdAccount = asyncHandler(async (req, res) => {
         const workSpaceId = req.query.workSpaceId;
         const accountId = req.query.accountId;
