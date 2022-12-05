@@ -89,18 +89,30 @@ class TaskController {
     });
 
     getTaskByTime = asyncHandler(async (req, res) => {
-        const { timeStart, timeEnd } = req.query;
-        const sql = 'SELECT * FROM Task WHERE taskDueTimeGTE >= ? AND taskDueTimeGTE <= ?';
-        db.query(sql, [timeStart, timeEnd], (err, result) => {
+        const { timeStart, timeEnd, accountId } = req.query;
+        const sql =
+            'SELECT * FROM Task WHERE taskDueTimeGTE >= ? AND taskDueTimeGTE <= ? AND taskAssignTo = ?';
+        db.query(sql, [timeStart, timeEnd, accountId], (err, result) => {
             if (err) throw err;
             res.send(result);
         });
     });
 
     getTaskByDay = asyncHandler(async (req, res) => {
-        const { day } = req.query;
-        const sql = 'SELECT * FROM Task WHERE CAST(taskDueTimeGTE AS DATE) = ?';
-        db.query(sql, [day], (err, result) => {
+        const { day, accountId } = req.query;
+        const sql =
+            'SELECT * FROM Task WHERE CAST(taskDueTimeGTE AS DATE) = ? AND taskAssignTo = ?';
+        db.query(sql, [day, accountId], (err, result) => {
+            if (err) throw err;
+            res.send(result);
+        });
+    });
+
+    getTaskByMonthYear = asyncHandler(async (req, res) => {
+        const { startMonth, startYear, dueMonth, dueYear, accountId } = req.query;
+        const sql = `SELECT * FROM Task WHERE YEAR(taskDueTimeGTE) >= ? AND YEAR(taskDueTimeGTE) <= ? 
+            AND MONTH(taskDueTimeGTE) >= ? AND MONTH(taskDueTimeGTE) <= ? AND taskAssignTo = ?`;
+        db.query(sql, [startYear, dueYear, startMonth, dueMonth, accountId], (err, result) => {
             if (err) throw err;
             res.send(result);
         });
