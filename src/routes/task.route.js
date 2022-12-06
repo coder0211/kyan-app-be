@@ -13,6 +13,12 @@ router.get('/get-all-by-account-workspace', auth, taskController.getAllByAccount
 
 router.get('/get-all-by-workspace', auth, taskController.getAllByWorkspace);
 
+router.get('/get-all-by-time', auth, taskController.getTaskByTime);
+
+router.get('/get-all-by-day', auth, taskController.getTaskByDay);
+
+router.get('/get-all-by-month-year', auth, taskController.getTaskByMonthYear);
+
 router.get('/get-total-task-by-account-id', auth, taskController.totalTaskInWorkSpaceByIdAccount);
 
 router.get(
